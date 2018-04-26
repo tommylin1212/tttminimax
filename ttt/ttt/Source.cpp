@@ -19,9 +19,10 @@ void pprint(string state) {
 int main() {
 	string example = "012345678";
 	pprint(example);
-	string start = "---------";
+	string start = "----X----";//the first move doesn't matter because you can always tie
+	//this cuts down on processing time significantly
 	minimax mm;
-	bool player = false;
+	bool player = true;
 	cout << "Board" << endl;
 	pprint(start);
 	int number;
