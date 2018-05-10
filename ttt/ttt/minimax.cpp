@@ -1,10 +1,11 @@
 #include "minimax.h"
 #include <algorithm>
 #include <iostream>
+#include <climits>
 int MAXV = 1;
 int MINV = -1;
 int TIEV = 0;
-char BLANK = '-';
+char BLANK = '.';
 using namespace std;
 Player TIE;
 Player MIN;
@@ -20,7 +21,7 @@ minimax::minimax(){
 	MIN.piece = 'O';
 	MIN.Val = MINV;
 
-	TIE.piece = '-';
+	TIE.piece = BLANK;
 	TIE.Val = TIEV;
 
 	XWIN.win = XLOSE.win = TIEGAME.win = true;
@@ -30,16 +31,34 @@ minimax::minimax(){
 	TIEGAME.player = TIE;
 }
 
-string minimax::decide(string state){
-	vector<string>neighbors = getNeighbors(state, MAX);
+string minimax::decide(string state, char p){
+	vector<string>neighbors = getNeighbors(state, ((p=='X')?(MAX):(MIN)));
 	vector<int>vals;
-	for (int i = 0; i < neighbors.size(); i++) {
-		vals.push_back(minValue(neighbors[i]));
+	int maxV = std::numeric_limits<int>::min();
+	int minV = std::numeric_limits<int>::max();
+	int temp = 0;
+	string tempstring = "";
+	if (p == MAX.piece){
+		for (int i = 0; i < neighbors.size(); i++) {
+			temp = max(maxV, minValue(neighbors[i]));
+			if (temp != maxV){
+				maxV = temp;
+				temp = 0;
+				tempstring = neighbors[i];
+			}
+		}
 	}
-	vector<int>::iterator i= max_element(vals.begin(), vals.end());
-	int value = distance(vals.begin(), i);
-	return neighbors[value];
-
+	else{
+		for (int i = 0; i < neighbors.size(); i++) {
+			temp = min(minV, maxValue(neighbors[i]));
+			if (temp != minV){
+				minV = temp;
+				temp = 0;
+				tempstring = neighbors[i];
+			}
+		}
+	}
+	return tempstring;
 }
 
 int minimax::maxValue(string state){
@@ -70,7 +89,7 @@ int minimax::utility(string state){
 }
 
 result minimax::termTest(string state){
-	if (state.find("-") == string::npos) {
+	if (state.find(BLANK) == string::npos) {
 		return TIEGAME;
 	}
 	for (int i = 0, j=0; i < state.length();j++, i+=3) {

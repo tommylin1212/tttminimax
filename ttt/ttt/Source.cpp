@@ -2,53 +2,23 @@
 #include <iostream>
 
 using namespace std;
+extern Player MAX;
+extern Player MIN;
 
 
-void pprint(string state) {
-	cout << "* * * * * ";
-	for (int i = 0; i < state.length(); i++) {
-		if (i%3 == 0) {
-			cout<<"*" << endl<<"*";
-		}
-		cout<<" " << state[i]<<" ";
-	}
-	cout <<"*"<< endl<<"* * * * * *"<<endl;
-}
 
-
-int main() {
-	string example = "012345678";
-	pprint(example);
-	string start = "----X----";//the first move doesn't matter because you can always tie
-	//this cuts down on processing time significantly
+int main(int ac, char* argv[]) {
 	minimax mm;
-	bool player = true;
-	cout << "Board" << endl;
-	pprint(start);
-	int number;
-	while (!mm.termTest(start).win) {
-		if (player) {
-			do {
-				cout<<endl << "enter a number 0-8 of a space that is blank" << endl;
-				cin >> number;
-			} while (start[number]!='-');
-			start[number] = 'O';
-			player = !player;
-			pprint(start);
-		}
-		else {
-			cout << endl << "MAX's turn" << endl;
-			start=mm.decide(start);
-			pprint(start);
-			player = !player;
-		}
+	if (ac != 3){
+		cout << "bad input friend" << endl;
+		exit(23);
 	}
-	if (start.find("-") == string::npos) {
-		cout << "tie";
+	if (argv[1][0] == 'X'){
+		cout<<mm.decide(argv[2], 'X');
 	}
-	else {
-		result res = mm.termTest(start);
-		cout << res.player.piece << " wins";
+	else{
+		cout<<mm.decide(argv[2], 'O');
 	}
+
 	cin.get(); cin.get(); cin.get();
 }

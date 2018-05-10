@@ -16,7 +16,7 @@ struct result {
 class minimax {
 public:
 	minimax();
-	std::string decide(std::string);
+	std::string decide(std::string,char);
 	int maxValue(std::string);
 	int minValue(std::string);
 	int utility(std::string);
