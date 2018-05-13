@@ -19,6 +19,4 @@ int main(int ac, char* argv[]) {
 	else{
 		cout<<mm.decide(argv[2], 'O');
 	}
-
-	cin.get(); cin.get(); cin.get();
 }
